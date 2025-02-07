@@ -6,7 +6,7 @@ import org.w3c.dom.ls.LSOutput;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.Scanner;
 
 public class ProductOPtional {
 
@@ -17,7 +17,10 @@ public class ProductOPtional {
        y devuelva el producto correspondiente usando Optional. Si no se
        encuentra el producto, devuelve un mensaje indicando que no existe.
     */
-        int id = 5;
+        Scanner sc = new Scanner(System.in);
+
+    System.out.print("Enter the id to find:");
+    int id = sc.nextInt();
 
         List<Product> products = Arrays.asList(
         new Product(1, "Apple MacBook Air 15-inch M3", 5000000),
