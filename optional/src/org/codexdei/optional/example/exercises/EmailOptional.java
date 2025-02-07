@@ -2,7 +2,9 @@ package org.codexdei.optional.example.exercises;
 
 import org.codexdei.optional.example.models.Email;
 import org.codexdei.optional.example.models.User;
+import org.w3c.dom.ls.LSOutput;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public class EmailOptional {
@@ -15,26 +17,25 @@ public class EmailOptional {
         Maneja correctamente los casos en los que el usuario o el email
         estén ausentes. */
 
-        User user = new User("Pepe", Optional.of(new Email("pepe@correo.com")));
+        User userWithEmail = new User("Pepe", Optional.of(new Email("pepe@correo.com")));
+        User userWithoutEmail = new User("Jazmin", Optional.empty());
 
-        Optional<String> emailConfirm = Optional.of(String.valueOf(user));
-
-        emailConfirm.ifPresentOrElse(u ->
-                confirmEmail(user),
-                () -> System.out.println("The user can not empty"));
-
-        emailConfirm.ifPresentOrElse(email ->
-                System.out.println("The email domain is: " + email),
-                () -> System.out.println("The user not email"));
+        confirmEmail(Optional.of(userWithEmail));
+        confirmEmail(Optional.of(userWithoutEmail));
+        confirmEmail(Optional.empty());
 
     }
 
-    private static <T extends User> Optional<String> confirmEmail(T obj) {
+    private static void confirmEmail(Optional<User> optionalUser) {
 
-        Optional<String> userOpt = obj.getEmail()
-                .flatMap(Email::getEmail)
-                .map()
+        String emailDomain = optionalUser
+                .map(user -> user.getEmail()
+                    .map(Email::getEmail)//obtener email
+                    .filter(email -> email.contains("@"))
+                    .map(e -> e.substring(e.indexOf("@")+1))
+                    .orElse("The user does not Email for the user: " + user.getName()))
+                .orElse("The user does not exist")
                 ;
-        return userOpt;
+        System.out.println(emailDomain);
     }
 }
